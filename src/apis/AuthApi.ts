@@ -3,7 +3,7 @@ import { jwtDecode } from "jwt-decode";
 import { Login, Register } from "@/types";
 import axiosInstance from "./axiosInstance";
 import store from "@/redux/store";
-import { setAuthenticated } from "@/redux/auth/authSlice";
+import { logout, setAuthenticated } from "@/redux/auth/authSlice";
 import { toast } from "sonner";
 
 class AuthApi {
@@ -34,7 +34,9 @@ class AuthApi {
 
   static async logout() {
     try {
-      localStorage.removeItem("token");
+      const { data } = await axiosInstance.post("/logout");
+      store.dispatch(logout());
+      toast.success(data.message);
     } catch (error: any) {
       throw new Error("AuthApi logout: " + error.message);
     }

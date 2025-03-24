@@ -51,7 +51,7 @@ const Footer = () => {
         <Separator />
         <div className='flex justify-between mt-4'>
           <p>Copyright © {new Date().getFullYear()} - All right reserved</p>
-          <p className='flex gap-2'>
+          <p className='gap-2 hidden sm:flex'>
             With <LucideHeart className='text-primary' /> by HAB
           </p>
         </div>
