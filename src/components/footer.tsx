@@ -11,7 +11,12 @@ const Footer = () => {
       <div className='container mx-auto py-8'>
         <Separator />
         <div className='grid grid-cols-3 mb-4 items-center mt-8'>
-          <img src={logo} alt='logo' className='max-w-32 h-auto' />
+          <div className='inline-flex'>
+            <div className='flex flex-col items-center'>
+              <img src={logo} alt='logo' className='max-w-16 h-auto' />
+              <p className='text-2xl font-bold'>Big Blog</p>
+            </div>
+          </div>
           <div className='justify-self-end col-span-2 flex gap-12 text-right'>
             <div>
               <h3 className='mb-4 text-xl px-3'>Company</h3>

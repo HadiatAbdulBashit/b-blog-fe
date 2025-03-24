@@ -1,13 +1,16 @@
-import Footer from "./components/footer";
-import Header from "./components/header";
+import { BrowserRouter, Route, Routes } from "react-router";
+import DefaultLayout from "./layouts/default";
+import Home from "./pages/home";
 
 function App() {
   return (
-    <>
-      <Header />
-      <p className='read-the-docs'>Click on the Vite and React logos to learn more</p>
-      <Footer />
-    </>
+    <BrowserRouter>
+      <Routes>
+        <Route path='/' element={<DefaultLayout />}>
+          <Route index element={<Home />} />
+        </Route>
+      </Routes>
+    </BrowserRouter>
   );
 }
 
