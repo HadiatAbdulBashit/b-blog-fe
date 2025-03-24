@@ -1,7 +1,5 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
-import { toast } from "sonner";
 
 import { LoaderCircle } from "lucide-react";
 
@@ -11,31 +9,31 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Checkbox } from "@/components/ui/checkbox";
+import useSWRMutation from "swr/mutation";
+import AuthApi from "@/apis/AuthApi";
+import type { Login } from "@/types";
 
-type Inputs = {
-  email: string;
-  password: string;
-  remember: boolean;
-};
-
-const Login = () => {
+const LoginPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+
+  const { trigger, isMutating } = useSWRMutation("/login", AuthApi.login);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<Inputs>();
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  } = useForm<Login>();
+  const onSubmit: SubmitHandler<Login> = async (data) => {
+    try {
+      await trigger(data);
 
-    setIsLoading(true);
-    toast.success("Login successful!");
-    reset();
-    setIsLoading(false);
-    navigate("/");
+      reset();
+      navigate("/");
+    } catch (error) {
+      // For Development
+      // console.log(error);
+    }
   };
 
   return (
@@ -52,7 +50,7 @@ const Login = () => {
               tabIndex={1}
               placeholder='email@example.com'
               {...register("email", { required: "Email is required", pattern: /^\S+@\S+$/i })}
-              disabled={isLoading}
+              disabled={isMutating}
               autoComplete='email'
             />
             <InputError message={errors.email?.message} />
@@ -69,18 +67,18 @@ const Login = () => {
               autoComplete='password'
               {...register("password", { required: "Password is required" })}
               placeholder='Password'
-              disabled={isLoading}
+              disabled={isMutating}
             />
             <InputError message={errors.password?.message} />
           </div>
 
           <div className='flex items-center space-x-3'>
-            <Checkbox id='remember' {...register("remember")} tabIndex={3} disabled={isLoading} />
+            <Checkbox id='remember' {...register("remember")} tabIndex={3} disabled={isMutating} />
             <Label htmlFor='remember'>Remember me</Label>
           </div>
 
-          <Button type='submit' className='mt-4 w-full' tabIndex={4} disabled={isLoading}>
-            {isLoading && <LoaderCircle className='h-4 w-4 animate-spin' />}
+          <Button type='submit' className='mt-4 w-full' tabIndex={4} disabled={isMutating}>
+            {isMutating && <LoaderCircle className='h-4 w-4 animate-spin' />}
             Log in
           </Button>
         </div>
@@ -96,4 +94,4 @@ const Login = () => {
   );
 };
 
-export default Login;
+export default LoginPage;

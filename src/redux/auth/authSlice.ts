@@ -24,8 +24,8 @@ export const counterSlice = createSlice({
     logout: (state) => {
       state.user = {};
       state.isAuthenticated = false;
-      localStorage.removeItem("loggedInUser");
-      sessionStorage.removeItem("loggedInUser");
+      localStorage.removeItem("token");
+      sessionStorage.removeItem("token");
     },
     setUser: (state, action) => {
       state.user = action.payload;

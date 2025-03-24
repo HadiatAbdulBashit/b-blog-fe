@@ -19,7 +19,7 @@ type Inputs = {
   confirmPassword: string;
 };
 
-const Register = () => {
+const RegisterPage = () => {
   const navigate = useNavigate();
 
   const { trigger, isMutating } = useSWRMutation("/register", AuthApi.register);
@@ -33,10 +33,15 @@ const Register = () => {
   } = useForm<Inputs>();
 
   const onSubmit: SubmitHandler<Inputs> = async (data) => {
-    await trigger(data);
+    try {
+      await trigger(data);
 
-    reset();
-    navigate("/login");
+      reset();
+      navigate("/login");
+    } catch (error) {
+      // For Development
+      // console.log(error);
+    }
   };
 
   return (
@@ -106,7 +111,7 @@ const Register = () => {
                 required: "Confirm Password is required",
                 validate: (val: string) => {
                   if (watch("password") != val) {
-                    return "Your passwords do no match";
+                    return "Your passwords do not match";
                   }
                 },
                 pattern: {
@@ -139,4 +144,4 @@ const Register = () => {
   );
 };
 
-export default Register;
+export default RegisterPage;

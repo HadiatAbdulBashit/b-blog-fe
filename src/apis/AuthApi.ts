@@ -1,34 +1,34 @@
 import { jwtDecode } from "jwt-decode";
 
-import { Register } from "@/types";
+import { Login, Register } from "@/types";
 import axiosInstance from "./axiosInstance";
 import store from "@/redux/store";
 import { setAuthenticated } from "@/redux/auth/authSlice";
 import { toast } from "sonner";
 
 class AuthApi {
-  static async login(email: string, password: string) {
+  static async login(url: string, { arg }: { arg: Login }) {
     try {
-      const { data } = await axiosInstance.post("/login", {
-        email,
-        password,
-      });
+      const { data } = await axiosInstance.post(url, { ...arg });
 
-      localStorage.setItem("token", data.token);
-      store.dispatch(setAuthenticated(jwtDecode(data.token)));
+      arg.remember ? localStorage.setItem("token", data.token) : sessionStorage.setItem("token", data.token);
+      store.dispatch(setAuthenticated(data.user));
+
+      toast.success("Login successful");
     } catch (error: any) {
-      throw new Error("AuthApi login: " + error.message);
+      toast.error(error.response.data.error);
+      throw new Error("AuthApi login: " + error.response.data.error);
     }
   }
 
   static async register(url: string, { arg }: { arg: Register }) {
     try {
       const { data } = await axiosInstance.post(url, { ...arg });
+
       toast.success(data.message);
-      return data;
     } catch (error: any) {
       toast.error(error.response.data.error);
-      throw new Error("AuthApi register: " + error);
+      throw new Error("AuthApi register: " + error.response.data.error);
     }
   }
 
@@ -42,7 +42,7 @@ class AuthApi {
 
   static async getUser() {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
       if (token) {
         const decodedToken: any = jwtDecode(token);
         return decodedToken.user;

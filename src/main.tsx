@@ -5,7 +5,7 @@ import { ThemeProvider } from "./components/theme-provider.tsx";
 import { Toaster } from "./components/ui/sonner.tsx";
 
 createRoot(document.getElementById("root")!).render(
-  <ThemeProvider defaultTheme='dark' storageKey='brita-ui-theme'>
+  <ThemeProvider defaultTheme='dark' storageKey='big-blog-ui-theme'>
     <App />
     <Toaster richColors />
   </ThemeProvider>
