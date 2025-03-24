@@ -1,7 +1,6 @@
 import { useForm, SubmitHandler } from "react-hook-form";
 import { Link, useNavigate } from "react-router";
-import { useState } from "react";
-import { toast } from "sonner";
+import useSWRMutation from "swr/mutation";
 
 import { LoaderCircle } from "lucide-react";
 
@@ -11,6 +10,8 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import InputError from "@/components/ui/input-error";
 
+import AuthApi from "@/apis/AuthApi";
+
 type Inputs = {
   name: string;
   email: string;
@@ -19,8 +20,9 @@ type Inputs = {
 };
 
 const Register = () => {
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const navigate = useNavigate();
+
+  const { trigger, isMutating } = useSWRMutation("/register", AuthApi.register);
 
   const {
     register,
@@ -30,13 +32,9 @@ const Register = () => {
     reset,
   } = useForm<Inputs>();
 
-  const onSubmit: SubmitHandler<Inputs> = (data) => {
-    console.log(data);
+  const onSubmit: SubmitHandler<Inputs> = async (data) => {
+    await trigger(data);
 
-    setIsLoading(true);
-
-    toast.success("Registration successful!");
-    setIsLoading(false);
     reset();
     navigate("/login");
   };
@@ -55,7 +53,7 @@ const Register = () => {
               tabIndex={1}
               placeholder='John Doe'
               {...register("name", { required: "Name is required" })}
-              disabled={isLoading}
+              disabled={isMutating}
               autoComplete='name'
             />
             <InputError message={errors.name?.message} />
@@ -68,7 +66,7 @@ const Register = () => {
               tabIndex={2}
               placeholder='email@example.com'
               {...register("email", { required: "Email is required", pattern: /^\S+@\S+$/i })}
-              disabled={isLoading}
+              disabled={isMutating}
               autoComplete='email'
             />
             <InputError message={errors.email?.message} />
@@ -91,14 +89,14 @@ const Register = () => {
                 },
               })}
               placeholder='Password'
-              disabled={isLoading}
+              disabled={isMutating}
               autoComplete='password'
             />
             <InputError message={errors.password?.message} />
           </div>
           <div className='grid gap-2'>
             <div className='flex items-center'>
-              <Label htmlFor='confirmPassword'>Password</Label>
+              <Label htmlFor='confirmPassword'>Confirm Password</Label>
             </div>
             <Input
               id='confirmPassword'
@@ -118,14 +116,14 @@ const Register = () => {
                 },
               })}
               placeholder='Password'
-              disabled={isLoading}
+              disabled={isMutating}
               autoComplete='confirm-password'
             />
             <InputError message={errors.confirmPassword?.message} />
           </div>
 
-          <Button type='submit' className='mt-4 w-full' tabIndex={5} disabled={isLoading}>
-            {isLoading && <LoaderCircle className='h-4 w-4 animate-spin' />}
+          <Button type='submit' className='mt-4 w-full' tabIndex={5} disabled={isMutating}>
+            {isMutating && <LoaderCircle className='h-4 w-4 animate-spin' />}
             Create account
           </Button>
         </div>
