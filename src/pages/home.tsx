@@ -1,6 +1,6 @@
 import PageTitle from "@/components/page-title";
 
-const Home = () => {
+const HomePage = () => {
   return (
     <div className='container mx-auto'>
       <PageTitle title='Home' />
@@ -11,4 +11,4 @@ const Home = () => {
   );
 };
 
-export default Home;
+export default HomePage;

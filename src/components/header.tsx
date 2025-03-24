@@ -1,3 +1,5 @@
+import { Link, NavLink } from "react-router";
+
 import { Button } from "@/components/ui/button";
 import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuTrigger } from "@/components/ui/dropdown-menu";
 
@@ -12,23 +14,29 @@ const Header = () => {
     <header className='sticky top-0 bg-background z-10'>
       <div className='container mx-auto flex justify-between py-2 items-center'>
         <div className='flex gap-8 items-center'>
-          <a href={"/"} className='flex'>
+          <Link to={"/"} className='flex'>
             <img src={logo} alt='logo' className='max-h-8 h-auto' />
             <h1 className='text-2xl font-bold'>
               <span className='text-primary'>ig</span> Blog
             </h1>
-          </a>
+          </Link>
           <nav>
             <ul className='flex gap-2'>
               <li>
-                <a href={"/"} className={"border-b border-primary bg-primary/10 hover:grayscale-100" + " py-1"}>
+                <NavLink
+                  to={"/"}
+                  className={({ isActive }) => (isActive ? "border-b border-primary bg-primary/10 hover:grayscale-100" : "none") + " py-1"}
+                >
                   <Button variant='ghost'>Home</Button>
-                </a>
+                </NavLink>
               </li>
               <li>
-                <a href={"/search"} className={"border-b border-primary bg-primary/10 hover:grayscale-100" + " py-1"}>
+                <NavLink
+                  to={"/search"}
+                  className={({ isActive }) => (isActive ? "border-b border-primary bg-primary/10 hover:grayscale-100" : "none") + " py-1"}
+                >
                   <Button variant='ghost'>Search</Button>
-                </a>
+                </NavLink>
               </li>
             </ul>
           </nav>
@@ -49,12 +57,12 @@ const Header = () => {
             </DropdownMenuContent>
           </DropdownMenu>
 
-          <a href={"/login"}>
+          <Link to={"/login"}>
             <Button variant={"outline"}>Login</Button>
-          </a>
-          <a href={"/register"}>
+          </Link>
+          <Link to={"/register"}>
             <Button>Register</Button>
-          </a>
+          </Link>
         </div>
       </div>
     </header>
