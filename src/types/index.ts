@@ -9,3 +9,17 @@ export type Login = {
   password: string;
   remember: boolean;
 };
+
+export type Article = {
+  author: Author;
+  id: string;
+  createdAt: string;
+  title: string;
+  content: string | undefined;
+};
+
+export type Author = {
+  email: string | undefined;
+  id: string | undefined;
+  name: string;
+};

@@ -1,5 +1,5 @@
 import { useSelector } from "react-redux";
-import { Link, NavLink, useNavigate } from "react-router";
+import { Link, useNavigate } from "react-router";
 
 import { Button } from "@/components/ui/button";
 import {
