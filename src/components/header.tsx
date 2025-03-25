@@ -18,11 +18,13 @@ import { useTheme } from "./theme-provider";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { useInitials } from "@/hooks/use-initials";
 import AuthApi from "@/apis/AuthApi";
+import { useEffect, useState } from "react";
 
 const Header = () => {
   const getInitials = useInitials();
   const navigate = useNavigate();
   const { setTheme } = useTheme();
+  const [navScroll, setNavScroll] = useState(false);
 
   const { user, isAuthenticated } = useSelector((state: any) => state.auth);
 
@@ -36,8 +38,19 @@ const Header = () => {
     }
   };
 
+  const changeNavBg = () => {
+    window.scrollY >= 2 ? setNavScroll(true) : setNavScroll(false);
+  };
+
+  useEffect(() => {
+    window.addEventListener("scroll", changeNavBg);
+    return () => {
+      window.removeEventListener("scroll", changeNavBg);
+    };
+  }, []);
+
   return (
-    <header className='sticky top-0 bg-background z-10'>
+    <header className={`sticky top-0 bg-background z-10 ${navScroll ? "border-b border-muted" : ""}`}>
       <div className='container mx-auto flex justify-between py-2 items-center'>
         <div className='flex gap-8 items-center'>
           <Link to={"/"} className='flex'>
