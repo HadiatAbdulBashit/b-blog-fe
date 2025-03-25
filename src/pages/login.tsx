@@ -24,6 +24,7 @@ const LoginPage = () => {
     formState: { errors },
     reset,
   } = useForm<Login>();
+
   const onSubmit: SubmitHandler<Login> = async (data) => {
     try {
       await trigger(data);

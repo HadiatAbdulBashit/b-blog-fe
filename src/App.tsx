@@ -2,9 +2,10 @@ import { BrowserRouter, Route, Routes } from "react-router";
 import DefaultLayout from "./layouts/default";
 import HomePage from "./pages/home";
 import AuthLayout from "./layouts/auth";
-import Register from "./pages/register";
-import Login from "./pages/login";
+import RegisterPage from "./pages/register";
+import LoginPage from "./pages/login";
 import ArticlePage from "./pages/article";
+import CreateArticle from "./pages/article/create";
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route path='/' element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
+          <Route path='articles/new' element={<CreateArticle />} />
           <Route path='articles/:id' element={<ArticlePage />} />
         </Route>
 
@@ -19,7 +21,7 @@ function App() {
           path='login'
           element={
             <AuthLayout title='Log in to your account' description='Enter your email and password below to log in'>
-              <Login />
+              <LoginPage />
             </AuthLayout>
           }
         />
@@ -27,7 +29,7 @@ function App() {
           path='register'
           element={
             <AuthLayout title='Create an account' description='Enter your details below to create your account'>
-              <Register />
+              <RegisterPage />
             </AuthLayout>
           }
         />

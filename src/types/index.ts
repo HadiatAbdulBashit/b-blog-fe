@@ -11,11 +11,16 @@ export type Login = {
 };
 
 export type Article = {
-  author: Author;
-  id: string;
-  createdAt: string;
+  author: Author | undefined;
+  id: string | undefined;
+  createdAt: string | undefined;
   title: string;
   content: string | undefined;
+};
+
+export type NewArticle = {
+  title: string;
+  content: string;
 };
 
 export type Author = {
