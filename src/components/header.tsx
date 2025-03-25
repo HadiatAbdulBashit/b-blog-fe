@@ -55,7 +55,7 @@ const Header = () => {
         <div className='flex gap-8 items-center'>
           <Link to={"/"} className='flex'>
             <img src={logo} alt='logo' className='max-h-8 h-auto' />
-            <h1 className='text-2xl font-bold'>
+            <h1 className='text-2xl font-bold hidden sm:block'>
               <span className='text-primary'>ig</span> Blog
             </h1>
           </Link>
