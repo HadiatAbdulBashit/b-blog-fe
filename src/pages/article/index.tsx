@@ -39,7 +39,7 @@ const ArticlePage = () => {
           <>
             <h1 className='text-3xl font-bold'>{data.title}</h1>
             <div className='flex justify-between'>
-              <p>{format(new Date(data.createdAt), "d LLL")}</p>
+              <p>{format(new Date(data.createdAt), "d LLL y")}</p>
               <p>By {data.author.name ?? "Unknown"}</p>
             </div>
             <div className='text-justify'>{data.content}</div>

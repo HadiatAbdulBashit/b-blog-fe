@@ -8,35 +8,44 @@ import ArticlePage from "./pages/article";
 import CreateArticlePage from "./pages/article/create";
 import MyArticlePage from "./pages/article/my";
 import EditArticlePage from "./pages/article/edit";
+import ProtectedRoute from "./components/protected-route";
+import { useSelector } from "react-redux";
 
 function App() {
+  const { isAuthenticated } = useSelector((state: any) => state.auth);
   return (
     <BrowserRouter>
       <Routes>
         <Route path='/' element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
-          <Route path='articles/new' element={<CreateArticlePage />} />
-          <Route path='articles/my' element={<MyArticlePage />} />
           <Route path='articles/:id' element={<ArticlePage />} />
-          <Route path='articles/:id/edit' element={<EditArticlePage />} />
+        </Route>
+        <Route path='/' element={<ProtectedRoute condition={isAuthenticated} target='/' />}>
+          <Route path='/' element={<DefaultLayout />}>
+            <Route path='articles/:id/edit' element={<EditArticlePage />} />
+            <Route path='articles/new' element={<CreateArticlePage />} />
+            <Route path='articles/my' element={<MyArticlePage />} />
+          </Route>
         </Route>
 
-        <Route
-          path='login'
-          element={
-            <AuthLayout title='Log in to your account' description='Enter your email and password below to log in'>
-              <LoginPage />
-            </AuthLayout>
-          }
-        />
-        <Route
-          path='register'
-          element={
-            <AuthLayout title='Create an account' description='Enter your details below to create your account'>
-              <RegisterPage />
-            </AuthLayout>
-          }
-        />
+        <Route path='/' element={<ProtectedRoute condition={!isAuthenticated} target='/' />}>
+          <Route
+            path='login'
+            element={
+              <AuthLayout title='Log in to your account' description='Enter your email and password below to log in'>
+                <LoginPage />
+              </AuthLayout>
+            }
+          />
+          <Route
+            path='register'
+            element={
+              <AuthLayout title='Create an account' description='Enter your details below to create your account'>
+                <RegisterPage />
+              </AuthLayout>
+            }
+          />
+        </Route>
       </Routes>
     </BrowserRouter>
   );

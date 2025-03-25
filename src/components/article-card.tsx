@@ -15,7 +15,7 @@ const ArticleCard = ({ article }: { article: Article }) => {
           </CardTitle>
         </Link>
         <CardDescription className={`flex text-base justify-between gap-4 w-full`}>
-          <p>{format(new Date(article.createdAt ?? ""), "d LLL y")}</p>
+          <p>{format(new Date(article.createdAt ?? ""), "d LLL")}</p>
           <p className=''>By {article.author?.name ?? "Unknown"}</p>
         </CardDescription>
       </CardHeader>

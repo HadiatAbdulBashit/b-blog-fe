@@ -12,7 +12,7 @@ const MyArticlePage = () => {
     <div className='container mx-auto'>
       <PageTitle title='Home' />
       <div className='mb-8'>
-        <h1 className='text-3xl font-bold text-primary min-w-max'>Article</h1>
+        <h1 className='text-3xl font-bold text-primary min-w-max'>My Article</h1>
       </div>
 
       {error ? (
@@ -20,7 +20,7 @@ const MyArticlePage = () => {
           <h1 className='text-3xl font-bold text-primary text-center'>Something went wrong</h1>
         </div>
       ) : (
-        <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 mt-12 gap-4'>
+        <div className='grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 2xl:grid-cols-4 mt-12 gap-4'>
           {isLoading
             ? Array.from({ length: 6 }).map((_, index) => <Skeleton key={index} className='h-24' />)
             : data.map((article: Article, index: number) => <ArticleCard key={index} article={article} />)}
