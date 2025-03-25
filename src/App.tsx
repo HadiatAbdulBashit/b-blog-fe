@@ -5,7 +5,8 @@ import AuthLayout from "./layouts/auth";
 import RegisterPage from "./pages/register";
 import LoginPage from "./pages/login";
 import ArticlePage from "./pages/article";
-import CreateArticle from "./pages/article/create";
+import CreateArticlePage from "./pages/article/create";
+import MyArticlePage from "./pages/article/my";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
       <Routes>
         <Route path='/' element={<DefaultLayout />}>
           <Route index element={<HomePage />} />
-          <Route path='articles/new' element={<CreateArticle />} />
+          <Route path='articles/new' element={<CreateArticlePage />} />
+          <Route path='articles/my' element={<MyArticlePage />} />
           <Route path='articles/:id' element={<ArticlePage />} />
         </Route>
 

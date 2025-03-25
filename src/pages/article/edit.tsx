@@ -5,25 +5,30 @@ import { Input } from "@/components/ui/input";
 import InputError from "@/components/ui/input-error";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
-import { NewArticle } from "@/types";
+import { EditArticle } from "@/types";
 import { LoaderCircle } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
 import { useNavigate } from "react-router";
 import useSWRMutation from "swr/mutation";
 
-const CreateArticlePage = () => {
+const EditArticlePage = () => {
   const navigate = useNavigate();
 
-  const { trigger, isMutating } = useSWRMutation("/posts", PostApi.createPost);
+  const { trigger, isMutating } = useSWRMutation("/posts", PostApi.editPost);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
-  } = useForm<NewArticle>();
+  } = useForm<EditArticle>({
+    defaultValues: {
+      title: "",
+      content: "",
+    },
+  });
 
-  const onSubmit: SubmitHandler<NewArticle> = async (data) => {
+  const onSubmit: SubmitHandler<EditArticle> = async (data) => {
     try {
       await trigger(data);
 
@@ -39,7 +44,7 @@ const CreateArticlePage = () => {
     <div className='container max-w-xl mx-auto'>
       <PageTitle title={"Create Article"} />
       <div className='mb-8'>
-        <h1 className='text-3xl font-bold text-primary min-w-max'>Create New Article</h1>
+        <h1 className='text-3xl font-bold text-primary min-w-max'>Edit Article</h1>
       </div>
 
       <form className='flex flex-col gap-6' onSubmit={handleSubmit(onSubmit)}>
@@ -76,7 +81,7 @@ const CreateArticlePage = () => {
 
           <Button type='submit' className='mt-4 w-full' tabIndex={3} disabled={isMutating}>
             {isMutating && <LoaderCircle className='h-4 w-4 animate-spin' />}
-            Create Article
+            Edit Article
           </Button>
         </div>
       </form>
@@ -84,4 +89,4 @@ const CreateArticlePage = () => {
   );
 };
 
-export default CreateArticlePage;
+export default EditArticlePage;

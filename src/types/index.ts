@@ -23,6 +23,11 @@ export type NewArticle = {
   content: string;
 };
 
+export type EditArticle = {
+  title: string | undefined;
+  content: string | undefined;
+};
+
 export type Author = {
   email: string | undefined;
   id: string | undefined;

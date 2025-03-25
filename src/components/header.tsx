@@ -13,7 +13,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 import logo from "/fav-icon.png";
-import { Edit2Icon, LogOut, Moon, Newspaper, Sun, User } from "lucide-react";
+import { Edit2Icon, LogOut, Moon, Newspaper, Sun } from "lucide-react";
 import { useTheme } from "./theme-provider";
 import { Avatar, AvatarFallback } from "./ui/avatar";
 import { useInitials } from "@/hooks/use-initials";
@@ -108,7 +108,7 @@ const Header = () => {
                 <DropdownMenuSeparator />
                 <DropdownMenuGroup>
                   <DropdownMenuItem asChild>
-                    <Link className='block w-full' to={"/my-articles"}>
+                    <Link className='block w-full' to={"/articles/my"}>
                       <Newspaper className='mr-2' />
                       My Article
                     </Link>

@@ -1,20 +1,23 @@
+import axiosInstance from "@/apis/axiosInstance";
+import { Author } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
 
-const getInitialState = () => {
-  let loggedInUserId = localStorage.getItem("token") || sessionStorage.getItem("token");
+const getInitialState = async () => {
+  let isTokenAvailable = localStorage.getItem("token") || sessionStorage.getItem("token");
 
-  if (!loggedInUserId) return { user: null, isAuthenticated: false };
+  if (!isTokenAvailable) return { user: {}, isAuthenticated: false };
+  const { data }: { data: Author } = await axiosInstance.post("/my-info");
 
-  loggedInUserId = loggedInUserId.trim();
+  return { user: data, isAuthenticated: true };
 };
 
-let initialState = getInitialState();
+let initialState = await getInitialState();
 
 export const counterSlice = createSlice({
   name: "auth",
   initialState: {
-    user: initialState?.user || {},
-    isAuthenticated: initialState?.isAuthenticated || false,
+    user: initialState?.user,
+    isAuthenticated: initialState?.isAuthenticated,
   },
   reducers: {
     setAuthenticated: (state, action) => {

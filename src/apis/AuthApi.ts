@@ -1,5 +1,3 @@
-import { jwtDecode } from "jwt-decode";
-
 import { Login, Register } from "@/types";
 import axiosInstance from "./axiosInstance";
 import store from "@/redux/store";
@@ -38,19 +36,17 @@ class AuthApi {
       store.dispatch(logout());
       toast.success(data.message);
     } catch (error: any) {
-      throw new Error("AuthApi logout: " + error.message);
+      throw new Error("AuthApi logout: " + error.response.data.error);
     }
   }
 
   static async getUser() {
     try {
-      const token = localStorage.getItem("token") || sessionStorage.getItem("token");
-      if (token) {
-        const decodedToken: any = jwtDecode(token);
-        return decodedToken.user;
-      }
+      const { data } = await axiosInstance.post("/my-info");
+      return data;
     } catch (error: any) {
-      throw new Error("AuthApi getUser: " + error.message);
+      toast.error("Session Expired");
+      throw new Error("AuthApi getUser: " + error.response.data.error);
     }
   }
 }
