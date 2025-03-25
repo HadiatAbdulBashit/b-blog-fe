@@ -7,6 +7,7 @@ import LoginPage from "./pages/login";
 import ArticlePage from "./pages/article";
 import CreateArticlePage from "./pages/article/create";
 import MyArticlePage from "./pages/article/my";
+import EditArticlePage from "./pages/article/edit";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
           <Route path='articles/new' element={<CreateArticlePage />} />
           <Route path='articles/my' element={<MyArticlePage />} />
           <Route path='articles/:id' element={<ArticlePage />} />
+          <Route path='articles/:id/edit' element={<EditArticlePage />} />
         </Route>
 
         <Route

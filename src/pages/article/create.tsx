@@ -68,7 +68,7 @@ const CreateArticlePage = () => {
               tabIndex={2}
               autoComplete='content'
               {...register("content", { required: "Content is required" })}
-              placeholder='Password'
+              placeholder='Content...'
               disabled={isMutating}
             />
             <InputError message={errors.content?.message} />

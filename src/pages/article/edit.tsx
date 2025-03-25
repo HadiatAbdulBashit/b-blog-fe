@@ -8,13 +8,14 @@ import { Textarea } from "@/components/ui/textarea";
 import { EditArticle } from "@/types";
 import { LoaderCircle } from "lucide-react";
 import { SubmitHandler, useForm } from "react-hook-form";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate, useParams } from "react-router";
 import useSWRMutation from "swr/mutation";
 
 const EditArticlePage = () => {
   const navigate = useNavigate();
-
-  const { trigger, isMutating } = useSWRMutation("/posts", PostApi.editPost);
+  const params = useParams();
+  const { state } = useLocation();
+  const { trigger, isMutating } = useSWRMutation(`/posts/${params.id}`, PostApi.editPost);
 
   const {
     register,
@@ -23,8 +24,8 @@ const EditArticlePage = () => {
     reset,
   } = useForm<EditArticle>({
     defaultValues: {
-      title: "",
-      content: "",
+      title: state.title ?? "",
+      content: state.content ?? "",
     },
   });
 
@@ -57,7 +58,7 @@ const EditArticlePage = () => {
               autoFocus
               tabIndex={1}
               placeholder='Some Title'
-              {...register("title", { required: "Title is required" })}
+              {...register("title")}
               disabled={isMutating}
               autoComplete='title'
             />
@@ -72,8 +73,8 @@ const EditArticlePage = () => {
               id='content'
               tabIndex={2}
               autoComplete='content'
-              {...register("content", { required: "Content is required" })}
-              placeholder='Password'
+              {...register("content")}
+              placeholder='Content...'
               disabled={isMutating}
             />
             <InputError message={errors.content?.message} />

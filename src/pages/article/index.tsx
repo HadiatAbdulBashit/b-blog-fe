@@ -1,14 +1,27 @@
 import { format } from "date-fns";
 
 import PageTitle from "@/components/page-title";
-import { useParams } from "react-router";
+import { Link, useNavigate, useParams } from "react-router";
 import useSWR from "swr";
 import PostApi from "@/apis/PostApi";
 import { Skeleton } from "@/components/ui/skeleton";
+import { useSelector } from "react-redux";
+import { Button } from "@/components/ui/button";
 
 const ArticlePage = () => {
   const params = useParams();
+  const navigate = useNavigate();
+  const user = useSelector((state: any) => state.auth.user);
   const { data, error, isLoading } = useSWR(`/posts/${params.id}`, PostApi.getPost);
+
+  const onDeleteClick = async () => {
+    if (window.confirm("Are you sure you want to delete this article?")) {
+      await PostApi.deletePost(`/posts/${params.id}`);
+      navigate("/articles/my");
+    }
+  };
+
+  const onEditClick = () => navigate(`/articles/${params.id}/edit`, { state: data });
 
   return (
     <div className='container max-w-xl mx-auto'>
@@ -28,6 +41,14 @@ const ArticlePage = () => {
               <p>By {data.author.name ?? "Unknown"}</p>
             </div>
             <div className='text-justify'>{data.content}</div>
+            {data.author.id === user.id && (
+              <div className='flex gap-4'>
+                <Button className='bg-amber-600' onClick={onEditClick}>
+                  Edit
+                </Button>
+                <Button onClick={onDeleteClick}>Delete</Button>
+              </div>
+            )}
           </>
         )}
       </article>

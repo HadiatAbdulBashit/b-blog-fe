@@ -38,12 +38,23 @@ class PostApi {
 
   static async editPost(url: string, { arg }: { arg: EditArticle }) {
     try {
-      await axiosInstance.post(url, { ...arg });
+      await axiosInstance.put(url, { ...arg });
 
       toast.success("Article edited successfully");
     } catch (error: any) {
       toast.error(error.response.data.error);
       throw new Error("PostApi editPost: " + error.response.data.error);
+    }
+  }
+
+  static async deletePost(url: string) {
+    try {
+      await axiosInstance.delete(url);
+
+      toast.success("Article deleted successfully");
+    } catch (error: any) {
+      toast.error(error.response.data.error);
+      throw new Error("PostApi deletePost: " + error.response.data.error);
     }
   }
 }
