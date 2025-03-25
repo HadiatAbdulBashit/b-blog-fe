@@ -44,7 +44,7 @@ const ArticlePage = () => {
             </div>
             <div className='text-justify'>{data.content}</div>
             {data.author.id === user.id && (
-              <div className='flex gap-4'>
+              <div className='flex gap-1'>
                 <Button className='bg-amber-700' onClick={onEditClick}>
                   Edit
                 </Button>

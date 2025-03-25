@@ -36,9 +36,9 @@ class CommentApi {
     }
   }
 
-  static async deleteComment(url: string) {
+  static async deleteComment(url: string, { arg }: { arg: string }) {
     try {
-      await axiosInstance.delete(url);
+      await axiosInstance.delete(url + arg);
 
       toast.success("Comment deleted successfully");
     } catch (error: any) {

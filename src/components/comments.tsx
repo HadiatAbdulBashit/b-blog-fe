@@ -11,29 +11,57 @@ import InputError from "./ui/input-error";
 import { LoaderCircle } from "lucide-react";
 import { formatDistanceToNow } from "date-fns";
 import { useSelector } from "react-redux";
+import { useState } from "react";
 
 const Comments = ({ postId }: { postId: string }) => {
-  const { isAuthenticated } = useSelector((state: any) => state.auth);
+  const { isAuthenticated, user } = useSelector((state: any) => state.auth);
+  const [selectedComment, setSelectedComment] = useState<string>("");
 
   const { data, error, isLoading, mutate } = useSWR(`/comments/${postId}`, CommentApi.getAllComments);
-  const { trigger, isMutating } = useSWRMutation("/comments", CommentApi.createComment);
+  const { trigger, isMutating } = useSWRMutation(`/comments`, CommentApi.createComment);
+  const { trigger: editTrigger, isMutating: editIsMutating } = useSWRMutation(`/comments/${selectedComment}`, CommentApi.editComment);
+  const { trigger: deleteTrigger } = useSWRMutation(`/comments/${selectedComment}`, CommentApi.deleteComment);
 
   const {
     register,
     handleSubmit,
     formState: { errors },
     reset,
+    setValue,
   } = useForm<NewComment>();
 
   const onSubmit: SubmitHandler<NewComment> = async (data) => {
     try {
-      await trigger(data);
+      if (selectedComment) {
+        await editTrigger(data);
+      } else {
+        await trigger(data);
+      }
+      setSelectedComment("");
       mutate();
       reset();
     } catch (error) {
       // For Development
       // console.log(error);
     }
+  };
+
+  const onEditClick = (comment: Comment) => {
+    setSelectedComment(comment.id);
+    setValue("content", comment?.content);
+    setValue("postId", comment?.postId);
+  };
+
+  const onDeleteClick = async (id: string) => {
+    if (window.confirm("Are you sure you want to delete this comment?")) {
+      await deleteTrigger(id);
+      mutate();
+    }
+  };
+
+  const onCancelClick = () => {
+    setSelectedComment("");
+    reset();
   };
 
   return (
@@ -48,15 +76,20 @@ const Comments = ({ postId }: { postId: string }) => {
                 placeholder='Enter your comment'
                 className='input input-bordered w-full'
                 {...register("content", { required: "Email is required" })}
-                disabled={isMutating}
+                disabled={isMutating || editIsMutating}
               />
-              <InputError message={errors.content?.message} />
               <input type='hidden' value={postId} {...register("postId", { required: "Post ID is required" })} />
-              <Button type='submit' className='w-fit' tabIndex={4} disabled={isMutating}>
-                {isMutating && <LoaderCircle className='h-4 w-4 animate-spin' />}
-                {isMutating ? "Submitting..." : "Comment"}
+              <Button type='submit' className='w-fit' tabIndex={4} disabled={isMutating || editIsMutating}>
+                {isMutating || (editIsMutating && <LoaderCircle className='h-4 w-4 animate-spin' />)}
+                {isMutating || editIsMutating ? "Submitting..." : selectedComment ? "Edit" : "Comment"}
               </Button>
+              {selectedComment && (
+                <Button variant={"outline"} onClick={onCancelClick}>
+                  Cancel
+                </Button>
+              )}
             </div>
+            <InputError message={errors.content?.message} />
           </form>
           <Separator />
         </>
@@ -76,6 +109,16 @@ const Comments = ({ postId }: { postId: string }) => {
               <p>{formatDistanceToNow(comment.createdAt)} ago • </p>
               <p>By {comment.author.name ?? "Unknown"}</p>
             </div>
+            {isAuthenticated && comment.author.id === user.id && !selectedComment && (
+              <div className='flex gap-1 mt-2'>
+                <Button size={"sm"} className='bg-amber-600' onClick={() => onEditClick(comment)}>
+                  Edit
+                </Button>
+                <Button size={"sm"} onClick={() => onDeleteClick(comment.id)}>
+                  Delete
+                </Button>
+              </div>
+            )}
           </div>
         ))
       )}
