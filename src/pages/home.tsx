@@ -6,7 +6,7 @@ import { Article } from "@/types";
 import useSWR from "swr";
 
 const HomePage = () => {
-  const { data, error, isLoading } = useSWR(`/posts`, PostApi.getAllPost);
+  const { data, error, isLoading } = useSWR(`/posts`, PostApi.getAllPosts);
 
   return (
     <div className='container mx-auto'>
