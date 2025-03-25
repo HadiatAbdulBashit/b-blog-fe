@@ -1,12 +1,14 @@
 import { format } from "date-fns";
 
 import PageTitle from "@/components/page-title";
-import { Link, useNavigate, useParams } from "react-router";
+import { useNavigate, useParams } from "react-router";
 import useSWR from "swr";
 import PostApi from "@/apis/PostApi";
 import { Skeleton } from "@/components/ui/skeleton";
 import { useSelector } from "react-redux";
 import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
+import Comments from "@/components/comments";
 
 const ArticlePage = () => {
   const params = useParams();
@@ -35,7 +37,7 @@ const ArticlePage = () => {
           <Skeleton className='h-24' />
         ) : (
           <>
-            <h1 className='text-3xl'>{data.title}</h1>
+            <h1 className='text-3xl font-bold'>{data.title}</h1>
             <div className='flex justify-between'>
               <p>{format(new Date(data.createdAt), "d LLL")}</p>
               <p>By {data.author.name ?? "Unknown"}</p>
@@ -43,12 +45,14 @@ const ArticlePage = () => {
             <div className='text-justify'>{data.content}</div>
             {data.author.id === user.id && (
               <div className='flex gap-4'>
-                <Button className='bg-amber-600' onClick={onEditClick}>
+                <Button className='bg-amber-700' onClick={onEditClick}>
                   Edit
                 </Button>
                 <Button onClick={onDeleteClick}>Delete</Button>
               </div>
             )}
+            <Separator />
+            <Comments postId={params.id || ""} />
           </>
         )}
       </article>

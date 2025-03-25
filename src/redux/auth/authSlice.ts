@@ -1,14 +1,22 @@
 import axiosInstance from "@/apis/axiosInstance";
 import { Author } from "@/types";
 import { createSlice } from "@reduxjs/toolkit";
+import { toast } from "sonner";
 
 const getInitialState = async () => {
   let isTokenAvailable = localStorage.getItem("token") || sessionStorage.getItem("token");
 
   if (!isTokenAvailable) return { user: {}, isAuthenticated: false };
-  const { data }: { data: Author } = await axiosInstance.post("/my-info");
 
-  return { user: data, isAuthenticated: true };
+  try {
+    const { data }: { data: Author } = await axiosInstance.post("/my-info");
+    return { user: data, isAuthenticated: true };
+  } catch (error) {
+    localStorage.removeItem("token");
+    sessionStorage.removeItem("token");
+    toast.error("Session Expired");
+    return { user: {}, isAuthenticated: false };
+  }
 };
 
 let initialState = await getInitialState();

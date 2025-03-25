@@ -39,16 +39,6 @@ class AuthApi {
       throw new Error("AuthApi logout: " + error.response.data.error);
     }
   }
-
-  static async getUser() {
-    try {
-      const { data } = await axiosInstance.post("/my-info");
-      return data;
-    } catch (error: any) {
-      toast.error("Session Expired");
-      throw new Error("AuthApi getUser: " + error.response.data.error);
-    }
-  }
 }
 
 export default AuthApi;

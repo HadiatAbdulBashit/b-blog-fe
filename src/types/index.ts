@@ -33,3 +33,20 @@ export type Author = {
   id: string | undefined;
   name: string;
 };
+
+export type NewComment = {
+  postId: string | undefined;
+  content: string;
+};
+
+export type Comment = {
+  id: string;
+  postId: string;
+  content: string;
+  createdAt: string;
+  author: Author;
+};
+
+export type EditComment = {
+  content: string;
+};
