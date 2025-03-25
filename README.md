@@ -1,54 +1,98 @@
-# React + TypeScript + Vite
+# 📝 B-Blog FE Documentation
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+## 📌 Project Overview
 
-Currently, two official plugins are available:
+This is the **frontend** of a blog application, built with **React, TypeScript, SWR, and ShadCN**. It allows users to browse, search, sort, and interact with blog posts and comments.
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react/README.md) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+## 🛠 Tech Stack
 
-## Expanding the ESLint configuration
+- **React** – UI framework
+- **TypeScript** – Type safety
+- **SWR** – Data fetching & caching
+- **ShadCN** – UI components
+- **Redux** – State management (for authentication)
+- **React Hook Form** – Form validation
+- **Axios** – HTTP requests
+- **Date-fns** – Date formatting
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+---
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
+## 🚀 Features
+
+✅ **View all posts** with search and sorting  
+✅ **Pagination** for post listing  
+✅ **View post details** with comments  
+✅ **Authentication** (Login/Register)  
+✅ **Create, edit, and delete comments**  
+✅ **Optimistic UI updates** using SWR  
+✅ **Dark mode**
+
+---
+
+## 🔧 Installation
+
+### 1️⃣ Clone the repository
+
+```sh
+git clone https://github.com/HadiatAbdulBashit/b-blog-fe.git
+cd b-blog-fe
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### 2️⃣ Install dependencies
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
-
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+```sh
+npm install
+# or
+yarn install
+# or
+bun add
 ```
+
+### 3️⃣ Set up environment variables
+
+Create a **.env** file in the root directory and add:
+
+```sh
+VITE_API_BASE_URL=<your_be_url> #ex: "http://localhost:3000/v1"
+```
+
+### 4️⃣ Start the development server
+
+```sh
+npm run dev
+# or
+yarn dev
+# or
+bun dev
+```
+
+---
+
+## 📂 Folder Structure
+
+```
+📦 src
+ ┣ 📂 apis          # API calls (e.g., PostApi, CommentApi)
+ ┣ 📂 components    # Reusable UI components
+ ┣ 📂 pages         # Page components (Home, Post Details, Login, etc.)
+ ┣ 📂 layout        # Reusable layout
+ ┣ 📂 redux         # Redux store & slices (auth, posts)
+ ┣ 📂 hooks         # Custom hooks for fetching & mutation
+ ┣ 📂 types         # TypeScript interfaces
+```
+
+---
+
+---
+
+## 📩 Contact
+
+For any issues or contributions, please create an issue or a pull request in the repository.
+
+## 📸 UI Screenshots
+
+![Screenshot B-Blog FE](/documentation/image.png)
+
+## Info
+
+- This project is already integrated with https://github.com/HadiatAbdulBashit/b-blog-be
